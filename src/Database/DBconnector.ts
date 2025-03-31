@@ -1,9 +1,10 @@
+import path from "path";
 import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
   type: "sqlite",
-  database: "src/Database/airports.db",
-  entities: ["src/entities/*.ts"],
+  database: path.join(__dirname, "../../airports.db"),
+  entities: [path.join(__dirname, "../entities/*.ts")],
   synchronize: false,
   logging: false,
 });

@@ -10,16 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.City = void 0;
-// src/entities/City.ts
 const typeorm_1 = require("typeorm");
 const Country_1 = require("./Country");
 const Airport_1 = require("./Airport");
 let City = class City {
     id;
     name;
-    latitude;
-    longitude;
+    alt_name;
     country;
+    is_active;
+    created_at;
+    updated_at;
+    updateTimestamp() {
+        this.updated_at = new Date();
+    }
+    lat;
+    long;
     airports;
 };
 exports.City = City;
@@ -32,18 +38,41 @@ __decorate([
     __metadata("design:type", String)
 ], City.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)("float"),
-    __metadata("design:type", Number)
-], City.prototype, "latitude", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], City.prototype, "alt_name", void 0);
 __decorate([
-    (0, typeorm_1.Column)("float"),
-    __metadata("design:type", Number)
-], City.prototype, "longitude", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => Country_1.Country, (country) => country.cities),
+    (0, typeorm_1.ManyToOne)(() => Country_1.Country, (country) => country.cities, { nullable: true }) // Allow nullable country
+    ,
     (0, typeorm_1.JoinColumn)({ name: "country_id" }),
-    __metadata("design:type", Country_1.Country)
+    __metadata("design:type", Object)
 ], City.prototype, "country", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: true }),
+    __metadata("design:type", Boolean)
+], City.prototype, "is_active", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "datetime", default: () => "CURRENT_TIMESTAMP" }),
+    __metadata("design:type", Date)
+], City.prototype, "created_at", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "datetime", default: () => "CURRENT_TIMESTAMP" }),
+    __metadata("design:type", Date)
+], City.prototype, "updated_at", void 0);
+__decorate([
+    (0, typeorm_1.BeforeUpdate)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], City.prototype, "updateTimestamp", null);
+__decorate([
+    (0, typeorm_1.Column)({ type: "float", nullable: true }),
+    __metadata("design:type", Number)
+], City.prototype, "lat", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "float", nullable: true }),
+    __metadata("design:type", Number)
+], City.prototype, "long", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => Airport_1.Airport, (airport) => airport.city),
     __metadata("design:type", Array)
